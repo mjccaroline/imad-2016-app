@@ -1,0 +1,38 @@
+body {
+    font-family: sans-serif;
+    background-color: rgb(229, 229, 239);
+    margin-top: 75px;
+}
+
+.center {
+    text-align: center;
+
+}
+.name {
+  font-family: Forte;
+  text-align: center;
+  color: chocolate;
+  }
+
+#AboutMe  {
+  background-color: rgb(185, 209, 210);
+      border: 5 px rgb(237, 137, 191);
+      padding: 50px;
+      width: auto;
+      text-align: center;
+  border: 5 px rgb(237, 137, 191);
+}
+.text-big {
+    font-size: 200%;
+    color:chocolate;
+    font-family:Forte;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.img-medium {
+    height: 200px;
+    border-radius: 110px;
+}
