@@ -1,7 +1,7 @@
 body {
     font-family: sans-serif;
     background-color: rgb(229, 229, 239);
-    margin-top: 75px;
+    margin-top: 60px;
 }
 
 .center {
@@ -16,11 +16,11 @@ body {
 
 #AboutMe  {
   background-color: rgb(185, 209, 210);
-      border: 5 px rgb(237, 137, 191);
+      border: 5px rgb(237, 137, 191);
       padding: 50px;
       width: auto;
       text-align: center;
-  border: 5 px rgb(237, 137, 191);
+ 
 }
 .text-big {
     font-size: 200%;
@@ -35,4 +35,12 @@ body {
 .img-medium {
     height: 200px;
     border-radius: 110px;
+}
+.container  {
+  max-width: 800px;
+  margin: 0 auto;
+  color: grey;
+  font-family: Times New Roman;
+  padding-left: 20px;
+  padding-right: 20px;
 }
