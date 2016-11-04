@@ -11,6 +11,7 @@ function entry() {
   margintop=margintop+5;
   if(margintop==50)  {
     clearInterval(timer);
+    margintop=0;
   }
   img.style.marginTop=margintop+'px';
 }
