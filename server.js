@@ -12,7 +12,7 @@ var articles ={
    content:`<p> This is article-one.Welcome </p>
    <p> Learning server side templating</p>`
     },
-    
+
   'article_two':{
    title:'Article two',
    date:'Nov 1, 2016',
@@ -72,6 +72,10 @@ app.get('/:articleName', function (req, res) {
 
 app.get('/ui/style.css', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'style.css'));
+});
+
+app.get('/ui/main.js', function (req, res) {
+  res.sendFile(path.join(__dirname, 'ui', 'main.js'));
 });
 
 
