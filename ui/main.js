@@ -7,7 +7,7 @@ var counter=0;
 var button=document.getElementById();
 button.onclick=function ()  {
   var request =new XMLHttpRequest();
-  
+
   request.onreadystatechange=function() {
 	if(request.readyState===XMLHttpRequest.DONE) {
 
@@ -17,9 +17,9 @@ button.onclick=function ()  {
 		span.innerHTML=counter.toString();
            }
 	}
-     
+
   };
-  request.open('GET','127.0.0.1:8080/counter',true);
+  request.open('GET','http://mjccaroline.imad.hasura-app.io/counter',true);
   request.send(null);
 };
 
