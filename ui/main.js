@@ -2,6 +2,27 @@ console.log('Loaded!');
 var img=document.getElementById('dp');
 var margintop=0;
 var timer=0;
+var counter=0;
+
+var button=document.getElementById();
+button.onclick=function ()  {
+  var request =new XMLHttpRequest();
+  
+  request.onreadystatechange=function() {
+	if(request.readyState===XMLHttpRequest.DONE) {
+
+	if(request.Status===200)  {
+		var counter=request.responseText;
+		var span=document.getElenyById();
+		span.innerHTML=counter.toString();
+           }
+	}
+     
+  };
+  request.open('GET','127.0.0.1:8080/counter',true);
+  request.send(null);
+};
+
 
 img.onclick=function () {
   timer=setInterval(entry,100);
