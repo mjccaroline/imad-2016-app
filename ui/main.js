@@ -4,7 +4,7 @@ var margintop=0;
 var timer=0;
 var counter=0;
 
-var button=document.getElementById();
+var button=document.getElementById('counter');
 button.onclick=function ()  {
   var request =new XMLHttpRequest();
 
@@ -13,7 +13,7 @@ button.onclick=function ()  {
 
 	if(request.Status===200)  {
 		var counter=request.responseText;
-		var span=document.getElenyById();
+		var span=document.getElenyById('count');
 		span.innerHTML=counter.toString();
            }
 	}
