@@ -2,7 +2,7 @@ console.log('Loaded!');
 var img=document.getElementById('dp');
 var margintop=0;
 var timer=0;
-var counter=0;
+
 
 var button=document.getElementById('counter');
 button.onclick=function ()  {
