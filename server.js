@@ -66,6 +66,7 @@ function createTemplate(data)  {
 
 return htmltemplate;
 }
+
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
@@ -73,7 +74,7 @@ app.get('/', function (req, res) {
 var pool=new Pool(config);
 
 app.get('/test_db',function(req,res){
-   pool.query('SELECT * FROM user',function(){
+   pool.query('SELECT * FROM user',function(err,result){
        if(err) {
            res.status(500).send(err.toString());
        }
