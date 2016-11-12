@@ -63,4 +63,5 @@ submitbtn.onclick=function() {
     var textinput=document.getElementById('name');
     var name=textinput.value;
     request.open('GET','http://mjccaroline.imad.hasura-app.io/submit_name?name='+name);
+    request.send(null);
   };
