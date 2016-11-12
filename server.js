@@ -2,6 +2,7 @@ var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
 var Pool = require('pg').Pool;
+var crypto = require('crypto');
 
 var app = express();
 app.use(morgan('combined'));
@@ -71,6 +72,17 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
 
+function hash(input,salt) {
+  var hashed=crypto.pbkdf2Sync(input,salt,1000,512,'sha512');
+  return hashed;
+}
+
+app.get('/hash:input',function(req,res){
+  var input=req.params.input;
+  var hashed=hash(input,'random-string');
+  res.send(hashed);
+});
+
 var pool=new Pool(config);
 
 app.get('/test_db',function(req,res){
@@ -81,7 +93,7 @@ app.get('/test_db',function(req,res){
        else {
            res.send(JSON.stringify(result.rows));
        }
-   }); 
+   });
 });
 
 var names=[];
@@ -121,8 +133,6 @@ app.get('/:articleName', function (req, res) {
          }
      }
   });
-  
-  
 });
 
 app.get('/ui/style.css', function (req, res) {
