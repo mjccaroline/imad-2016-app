@@ -106,8 +106,8 @@ app.get('/download.ico', function (req, res) {
 });
 
 app.get('/:articleName', function (req, res) {
-  var articleName=req.params.articleName;
-  pool.query("SELECT * FROM articles WHERE title="+articleName,function(err,result){
+//  var articleName=req.params.articleName;
+  pool.query("SELECT * FROM articles WHERE title="+req.params.articleName,function(err,result){
      if(err){
          res.status(500).send(err.toString());
      }
