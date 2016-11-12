@@ -73,12 +73,12 @@ app.get('/', function (req, res) {
 });
 
 function hash(input,salt) {
-  var hashedstring=crypto.pbkdf2Sync(input,salt,10000,512,'sha512');
-  return hashedstring.toString();
+  var hashed=crypto.pbkdf2Sync(input,salt,10000,512,'sha512');
+  return hashed.toString('hex');
 }
 
 app.get('/hash/:input',function(req,res){
-  //var input=req.params.input;
+ 
   var hashed=hash(req.params.input,'random-string');
   res.send(hashed);
 });
