@@ -14,18 +14,7 @@ var config= {
     password:process.env.DB_PASSWORD
 };
 
-var pool=new Pool(config);
 
-app.get('/test_db',function(req,res){
-   pool.query('SELECT * FROM user',function(){
-       if(err) {
-           res.status(500).send(err.toString());
-       }
-       else {
-           res.send(JSON.stringify(result));
-       }
-   }) 
-});
 
 var articles ={
  'article_one':{
@@ -78,6 +67,19 @@ return htmltemplate;
 }
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
+});
+
+var pool=new Pool(config);
+
+app.get('/test_db',function(req,res){
+   pool.query('SELECT * FROM user',function(){
+       if(err) {
+           res.status(500).send(err.toString());
+       }
+       else {
+           res.send(JSON.stringify(result));
+       }
+   }) 
 });
 
 var names=[];
