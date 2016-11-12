@@ -85,6 +85,14 @@ app.get('/hash/:input',function(req,res){
 
 var pool=new Pool(config);
 
+app.post('/create_user',function(req,res){
+    var salt=
+    var username=
+    var password=
+    var hashp=hash(password,salt);
+    pool.query('INSERT INTO "user" VALUES ')
+});
+
 app.get('/test_db',function(req,res){
    pool.query('SELECT * FROM test',function(err,result){
        if(err) {
