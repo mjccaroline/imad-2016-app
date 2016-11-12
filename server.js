@@ -73,8 +73,8 @@ app.get('/', function (req, res) {
 });
 
 function hash(input,salt) {
-  var hashedstring=crypto.pbkdf2Sync(input,salt,1000,512,'sha512');
-  return hashedstring;
+  var hashedstring=crypto.pbkdf2Sync(input,salt,10000,512,'sha512');
+  return hashedstring.toString();
 }
 
 app.get('/hash/:input',function(req,res){
