@@ -77,7 +77,7 @@ function hash(input,salt) {
   return hashed;
 }
 
-app.get('/hash:input',function(req,res){
+app.get('/hash/:input',function(req,res){
   var input=req.params.input;
   var hashed=hash(input,'random-string');
   res.send(hashed);
