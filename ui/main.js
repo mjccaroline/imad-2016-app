@@ -41,9 +41,9 @@ function entry() {
 
 //playing around with JSON; first step for adding comments
 var submitbtn=document.getElementById('sbt_btn');
-submitbtn.onclick() {
+submitbtn.onclick=function() {
   var request=new XMLHttpRequest();
-  request.onreadystatechange=function)() {
+  request.onreadystatechange=function() {
 
     if(request.readyState===XMLHttpRequest.DONE){
 
