@@ -80,7 +80,7 @@ function hash(input,salt) {
 }
 
 app.get('/hash/:input',function(req,res){
- 
+
   var hashed=hash(req.params.input,'random-string');
   res.send(hashed);
 });
@@ -92,13 +92,40 @@ app.post('/create_user',function(req,res){
     var username=req.body.username;
     var password=req.body.password;
     var hashp=hash(password,salt);
-    pool.query('INSERT INTO "user" ("username","password"  VALUES ($1,$2)',[username,password],function(err,result){
+    pool.query('INSERT INTO "user" ("username","password")  VALUES ($1,$2)',[username,password],function(err,result){
        if(err) {
            res.status(500).send(err.toString());
        } else {
            res.send('User successfully creeated.');
        }
     });
+});
+
+app.post('/login',function(req,res){
+  var username=req.body.username;
+  var password=req.body.password;
+  pool.query('SELECT * FROM "user" WHERE username=$1',[username],function(err,result){
+    if(err){
+      res.status(500).send(err.toString());
+    }
+    else{
+      if(result.rows.length===0){
+        res.status(403).send('invalid username or password');
+
+        }
+        else{
+          var hashp=result.rows[0].password;
+          var salt=hashp.split('$')[2];
+          var hashed=hash(password,salt);
+          if(hashp===hashed){
+            res.send('Login successfull');
+          }else{
+            res.status(403).send('invalid username or password');
+          }
+        }
+      }
+    }
+  });
 });
 
 app.get('/test_db',function(req,res){
