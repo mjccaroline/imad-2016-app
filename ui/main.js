@@ -16,7 +16,7 @@ button.onclick=function ()  {
 		var counter=request.responseText;
 		var span=document.getElementById('count');
 		span.innerHTML=counter.toString();
-           }
+    }
 	}
 
   };
@@ -62,6 +62,6 @@ submitbtn.onclick=function() {
     };
     var textinput=document.getElementById('name');
     var name=textinput.value;
-    request.open('GET','http://mjccaroline.imad.hasura-app.io/submit_name?name='+name);
+    request.open('GET','http://mjccaroline.imad.hasura-app.io/submit_name?name='+name,true);
     request.send(null);
   };

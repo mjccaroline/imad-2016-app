@@ -4,6 +4,7 @@ var path = require('path');
 var Pool = require('pg').Pool;
 var crypto = require('crypto');
 var bodyParser=require('body-parser');
+var session=require('express-session');
 
 var app = express();
 app.use(morgan('combined'));
@@ -101,6 +102,7 @@ app.post('/create_user',function(req,res){
     });
 });
 
+
 app.post('/login',function(req,res){
   var username=req.body.username;
   var password=req.body.password;
@@ -118,15 +120,31 @@ app.post('/login',function(req,res){
           var salt=hashp.split('$')[2];
           var hashed=hash(password,salt);
           if(hashp===hashed){
+            req.session.auth={userId:result.rows[0].userid};
             res.send('Login successfull');
           }else{
             res.status(403).send('invalid username or password');
           }
         }
       }
-    
+
   });
 });
+
+app.get('/chk-login',function(req,res){
+  if(req.session&& req.session.auth && req.session.auth.userId){
+    res.send('Logged in');
+  }
+  else{
+    res.send('not logged in');
+  }
+});
+
+app.get('/logout',function(req,res){
+  delete req.session.auth;
+  res.send('Successfully logged out');
+});
+
 
 app.get('/test_db',function(req,res){
    pool.query('SELECT * FROM test',function(err,result){
