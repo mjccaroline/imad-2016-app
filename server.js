@@ -154,7 +154,7 @@ function createArticle(article,username) {
           <div id="comment_section">
             <button type="button" id="comment">View commments</button>
             <button type="button" id="addComment" disabled>Comment</button>
-      </div>`
+      </div>`;
       return htmltemplate;
 }
 /////////////////////////////</article>//////////////////////////////////////////////////////
@@ -262,10 +262,9 @@ app.get('/Articles',function(req,res){
         for (var i = 0; i < result.rows.length; i++) {
           var article=result.rows[i];
           //articles.push(article);
-          articlelist+=`<li><a href="/Articles/${article.ariticle_id}>${article.title} (article_id: ${article.ariticle_id})</a></li>";
-          `
+          articlelist+=`<li><a href="/Articles/${article.ariticle_id}>${article.title} (article_id: ${article.ariticle_id})</a></li>"`;          `
         }
-        articlelist+=`</ol>`;
+        articlelist+='</ol>';
         res.send(createTemplate(articlelist));
       }
       }
