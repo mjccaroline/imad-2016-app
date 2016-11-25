@@ -262,7 +262,7 @@ app.get('/Articles',function(req,res){
         for (var i = 0; i < result.rows.length; i++) {
           var article=result.rows[i];
           //articles.push(article);
-          articlelist+=`<li><a href="/Articles/${article.ariticle_id}>${article.title} (article_id: ${article.ariticle_id})</a></li>"`';          `
+          articlelist+=`<li><a href="/Articles/${article.ariticle_id}>${article.title} (article_id: ${article.ariticle_id})</a></li>"``;          `
         }
         articlelist+='</ol>';
         res.send(createTemplate(articlelist));
