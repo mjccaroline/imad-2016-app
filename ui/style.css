@@ -1,46 +1,72 @@
-body {
-    font-family: sans-serif;
-    background-color: rgb(229, 229, 239);
-    margin-top: 60px;
+.center{
+  text-align: center;
 }
 
-.center {
+.left{
+  text-align: left;
+}
+
+.right{
+  text-align: right;
+}
+
+.justify{
+    text-align: justify;
+}
+
+body{
+  background-color: #f6f0a9;
+}
+
+/*add style for new_user page*/
+/*added to articles page*/
+li a {
+    display: block;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    height: 50px;
+    overflow: auto;
     text-align: center;
 
 }
-.name {
-  font-family: Forte;
-  text-align: center;
-  color: chocolate;
-  }
 
-#AboutMe  {
-  background-color: rgb(185, 209, 210);
-      border: 5px rgb(237, 137, 191);
-      padding: 50px;
-      width: auto;
-      text-align: center;
- 
+/*li a:active {
+    background-color: beige;
+    color: white;
 }
-.text-big {
-    font-size: 200%;
-    color:chocolate;
-    font-family:Forte;
+*/
+li a:hover {
+    background-color: #555;  //blackish
+    color: white;
 }
 
-.bold {
-    font-weight: bold;
+
+
+#sidebar{
+  background-color:#512826;
+  border: 5px solid gold;
+  width: 13%;
+  list-style-type: none;
+  padding: 0;
+  float: left;
+  height: 100%;
+  position: fixed;
+  margin: 0;
 }
 
-.img-medium {
-    height: 200px;
-    border-radius: 110px;
+img{
+  margin-left: 40%;
+  margin-bottom: 5%;
+  width: 20%;
+  border-radius: 10%;
 }
-.container  {
-  max-width: 800px;
-  margin: 0 auto;
-  color: grey;
-  font-family: Times New Roman;
-  padding-left: 20px;
-  padding-right: 20px;
+
+/*modify styling of content-text as its styling is applied to all pages*/
+
+.content-text{
+  float:left;
+  padding-right: 5%;
+  margin-left: 18%;
+  margin-top: 3%;
 }

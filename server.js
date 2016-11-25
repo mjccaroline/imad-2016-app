@@ -1,14 +1,20 @@
+///create comment
+
 var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
-var Pool = require('pg').Pool;
-var crypto = require('crypto');
+var Pool=require('pg').Pool;
+var crypto=require('crypto');
 var bodyParser=require('body-parser');
 var session=require('express-session');
 
 var app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json());
+app.use(session({
+  secret:'randomValue',
+  cookie:{maxAge:1000*60*60*24*30}
+}));
 
 var config= {
     database:'mjccaroline',
@@ -18,75 +24,152 @@ var config= {
     password:process.env.DB_PASSWORD
 };
 
+var pool=new Pool(config);
 
+var sidebar=`<ul id="sidebar">
+  <li><a href="/">Home</a></li>
+  <li><a href="/AboutMe">About Me</a></li>
+  <li><a href="/SignUp">Sign up</a></li>
+  <li><a href="/SignIn">Sign in</a></li>
+  <li><a href="/Articles">Articles</a></li>
+  <li><a href="#" id="logout"></a></li>
+</ul>`;
 
-var articles ={
- 'article_one':{
-   title:'Article-one',
-   date:'Oct 29, 2016',
-   content:`<p> This is article-one.Welcome </p>
-   <p> Learning server side templating</p>`
-    },
+var maincontents={
+'AboutMe':`<h3>Personal Info</h3>
 
-  'article_two':{
-   title:'Article two',
-   date:'Nov 1, 2016',
-   content:`<p> Second article.</p>
-   <p>Keep going!!!</p>`
- }
+            <p>
+              Hi, I am Maria Caroline Jose from, Kerala - the God's Own Country.
+            </p>
 
+            <p>
+              My hobbies are:
+              <ul>
+                <li>Travelling</li>
+                <li>Driving</li>
+                <li>Reading books</li>
+              </ul>
+            </p>
+            <br>
+            <h3>Professional Info</h3>
+
+            <p>
+              I am a B Tech graduate from Government Engineering College, Thrissur
+            </p>
+
+            <p>
+              I like to code.
+            </p>`,
+'SignUp':`<form>
+            <label for="username">username</label>
+            <br>
+            <input type="text" id="username" placeholder="username" required="true">
+            <br>
+            <br>
+
+            <label for="password">password</label>
+            <br>
+            <input type="password" id="password" placeholder="password" required="true">
+            <br>
+            <br>
+
+            <label for="password">confirm password</label>
+            <br>
+            <input type="password" id="confirm_password" required="true">
+            <br>
+            <br>
+
+            <input type="submit" id="new_user" value="Sign Up" />
+          </form>`,
+'SignIn':`<form>
+            <label for="username">username</label>
+            <br>
+            <input type="text" id="username" placeholder="username" required="true">
+            <br>
+            <br>
+
+            <label for="password">password</label>
+            <br>
+            <input type="password" id="password" placeholder=password required="true">
+            <br>
+            <br>
+
+            <input type="submit" id="login" value="Login" />
+          </form>`
 };
 
-function createTemplate(data)  {
-  var title=data.title;
-  var date=data.date;
-  var content=data.content;
+function createTemplate(data) {
+  var htmltemplate=`<!doctype html>
+  <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="/ui/style.css" rel="stylesheet" />
+        <link href="/download.ico" rel="shortcut icon" type="image/png"/>
+        <title> Tripping!!! </title>
+      </head>
 
- var htmltemplate=`<!doctype html>
- <html>
- <head>
-   <title> ${title}</title>
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <link href="/ui/style.css" rel="stylesheet" />
-   <link href="/download.ico" rel="shortcut icon" type="image/png"/>
- </head>
- <body>
-   <div class="container">
-     <div>
-       <a href="/">Home</a>
-     </div>
-     <hr/>
-   <h3> ${title} </h3>
-   <div>
-     ${date.toDateString()}
-   </div>
-   <div>
-       ${content}
-     </div>
- </div>
- </body>
- </html>
-`;
+      <body>
 
+          ${sidebar}
+
+        <div class="content-text" >
+          ${data}
+        </div>
+      </body>
+  </html>
+`
 return htmltemplate;
 }
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'index.html'));
-});
+///////////////////////////articles//////////////////////////////////////////////////////////
 
+
+function createArticle(article,username) {
+  var htmltemplate=`<!doctype html>
+  <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="/ui/style.css" rel="stylesheet" />
+        <link href="/download.ico" rel="shortcut icon" type="image/png"/>
+        <title> Tripping!!! </title>
+      </head>
+
+      <body>
+
+          ${sidebar}
+
+        <div class="content-text" >
+          <h3>${article.title}</h3>
+          <div id="content">
+            ${article.content}
+          </div>
+          <hr>
+          <p id="details">
+            Created by ${username} on ${(article.date).toDateString()}
+            </p>
+          <p id="${article.article_id}">Article_id:${article.article_id}
+          </p>
+          <hr>
+          <br>
+          <div id="comment_section">
+            <button type="button" id="comment">View commments</button>
+            <button type="button" id="addComment" disabled>Comment</button>
+      </div>`
+      return htmltemplate;
+}
+/////////////////////////////</article>//////////////////////////////////////////////////////
 function hash(input,salt) {
   var hashed=crypto.pbkdf2Sync(input,salt,10000,512,'sha512');
   return ['pbkdff2',"10000",salt,hashed.toString('hex')].join('$');
 }
 
-app.get('/hash/:input',function(req,res){
-
-  var hashed=hash(req.params.input,'random-string');
-  res.send(hashed);
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'ui', 'homepage.html'));
 });
 
-var pool=new Pool(config);
+app.get('/ui/style.css', function (req, res) {
+  res.sendFile(path.join(__dirname, 'ui', 'style.css'));
+});
 
 app.post('/create_user',function(req,res){
     var salt=crypto.randomBytes(128).toString('hex');
@@ -102,17 +185,16 @@ app.post('/create_user',function(req,res){
     });
 });
 
-
 app.post('/login',function(req,res){
   var username=req.body.username;
   var password=req.body.password;
   pool.query('SELECT * FROM "user" WHERE username=$1',[username],function(err,result){
     if(err){
-      res.status(500).send(err.toString());
+      res.status(500).send('Something wrong with the server. Try Again.');
     }
     else{
       if(result.rows.length===0){
-        res.status(403).send('invalid username or password');
+        res.status(403).send('Invalid username or password');
 
         }
         else{
@@ -121,9 +203,9 @@ app.post('/login',function(req,res){
           var hashed=hash(password,salt);
           if(hashp===hashed){
             req.session.auth={userId:result.rows[0].userid};
-            res.send('Login successfull');
+            res.send('Login successfull');///INCLUDE STATUS FOR successfull COMPLETION OF REQUEST
           }else{
-            res.status(403).send('invalid username or password');
+            res.status(403).send('Invalid username or password');
           }
         }
       }
@@ -145,66 +227,115 @@ app.get('/logout',function(req,res){
   res.send('Successfully logged out');
 });
 
+//implement username using span and client side scripting
+app.get('/username',function(req,res){
+  var userid=req.query.id;                        //check whether it is req.query.userid
+  pool.query('SELECT username FROM "user" u,articles a WHERE u.userid=a.userid AND $1=u.userid',[userid],function(err,result){
+    if(err){
+      res.status(500).send(err.toString());
+    }
+    else{
+      if(result.rows.length===0){
+        res.status(403).send('Error. Unknown User');
+      }
+      else {
+        res.send((result.rows[0].username).toString());               //is toString really needed???
+      }
+    }
+  });
 
-app.get('/test_db',function(req,res){
-   pool.query('SELECT * FROM test',function(err,result){
-       if(err) {
-           res.status(500).send(err.toString());
-       }
-       else {
-           res.send(JSON.stringify(result.rows));
-       }
-   });
 });
 
-var names=[];
-app.get('/submit_name',function (req,res) {
-  var name=req.query.name;
-  names.push(name);
-  res.send(JSON.stringify(names));
+app.get('/Articles',function(req,res){
+    pool.query("SELECT article_id,title FROM articles",function(err,result){
+      if(err){
+        res.status(500).send(err.toString());
+      }
+      else{
+        if(result.rows.length===0){
+          res.status(404).send('No articles found!!!');
+        }
+      else{
+        articles=`<div class="content-text" >
+          <h3>Aricles</h3>
+          <ol id="list">`;
+        for (var i = 0; i < result.rows.length; i++) {
+          var article=result.rows[i];
+          //articles.push(article);
+          articlelist+=`<li><a href="/Articles/${article.ariticle_id}>${article.title} (article_id: ${article.ariticle_id})</a></li>";
+          `
+        }
+        articlelist+=`</ol>`;
+        res.send(createTemplate(articlelist));
+      }
+      }
+    });
 });
 
-var counter=0;
-app.get('/counter',function(req,res) {
-  counter=counter+1;
-  res.send(counter.toString());
-});
+app.get('/Articles/:id',function(req,res){
+  var id=req.params.id;
 
-app.get('/ui/pr.jpg', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'pr.jpg'));
-});
-
-app.get('/download.ico', function (req, res) {
-  res.sendFile(path.join(__dirname,  'download.ico'));
-});
-
-app.get('/:articleName', function (req, res) {
-//  var articleName=req.params.articleName;
-  pool.query("SELECT * FROM articles WHERE title=$1",[req.params.articleName],function(err,result){
-     if(err){
-         res.status(500).send(err.toString());
-     }
-     else{
-         if(result.rows.length===0){
-             res.status(404).send('Article not found');
-         }
-         else {
-             var article=result.rows[0];
-             res.send(createTemplate(article));
-         }
-     }
+  pool.query("SELECT * FROM articles WHERE id=$1",[id],function(err,result){
+    if(err){
+      res.status(500).send(err.toString());
+    }
+    else{
+      if(result.rows.length===0){
+        res.status(404).send('No article found!!!');
+      }
+      else{
+        var username;
+        var article=result.rows[0];
+        username=findUsername(article.userid);  //findUsername doesnot exists!!!
+        res.send(createArticle(article,username))
+    }
+    }
   });
 });
 
-app.get('/ui/style.css', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'style.css'));
+app.get('/Articles/comments',function(req,res){
+  ariticle_id=req.query.article_id;
+  pool.query('SELECT * FROM comments WHERE article_id=$1',[article_id],function(err,result){
+    if(err){
+      res.status(500).send(err.toString());
+    }
+    else{
+      var comments=result.rows;
+      if(result.rows.length===0){
+        res.status(404).send('No comments found.');
+      }
+      else{
+        res.send(JSON.stringify(commments));
+      }
+    }
+  });
 });
 
-app.get('/ui/main.js', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'main.js'));
+app.get('/Article/addComment',function(req,res){
+  //extract comment, date and userid
+  var comment;
+  var userid;
+  var date;
+  var article_id;
+
+  pool.query('INSERT INTO comments (comment,userid,date,article_id) VALUES ($1,$2,$3)',[comment,userid,date,article_id],function(err,result){
+    if(err){
+      res.status(500).send(err.toString());
+    }
+    else{
+      res.send('Comment successfully added');
+    }
+  });
 });
 
+app.get('/:maincontent',function(req,res){
+  var maincontent=req.params.maincontent;
+  res.send(createTemplate(maincontents[maincontent]));
+});
 
+app.get('/ui/pr.jpg',function(req,res){
+  res.sendFile(path.join(__dirname,'ui','pr.jpg'));
+});
 
 
 
