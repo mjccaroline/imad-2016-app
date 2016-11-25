@@ -256,7 +256,7 @@ app.get('/Articles',function(req,res){
           res.status(404).send('No articles found!!!');
         }
       else{
-        articles=`<div class="content-text" >
+        var articlelist=`<div class="content-text" >
           <h3>Aricles</h3>
           <ol id="list">`;
         for (var i = 0; i < result.rows.length; i++) {

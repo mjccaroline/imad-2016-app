@@ -10,7 +10,7 @@ addComment.onclick=function(){
   request.send(null);
 };
 
-var getcomments=getElementById();//fill the id of the view comment button
+var getcomments=getElementById('comment');//fill the id of the view comment button
 var article_id= document.getElementsByTagName("H3")[0].getAttribute("id");   //title should be the only element with tag name h3
 
 getcomments.onclick=function(){
